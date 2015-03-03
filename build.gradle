@@ -1,0 +1,44 @@
+buildscript {
+    repositories {
+        maven { url "http://repo.spring.io/libs-snapshot" }
+        mavenLocal()
+    }
+    dependencies {
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+
+
+jar {
+    baseName = 'popularioty-public-api'
+    version =  '0.0.1'
+}
+repositories {
+    mavenCentral()
+    maven { url "http://repo.spring.io/libs-snapshot" }
+	maven { url "https://repository.jboss.org/nexus/content/repositories/releases" }
+}
+
+dependencies {
+  
+    
+    compile 'org.slf4j:slf4j-api:1.7.5'
+    
+    compile 'com.couchbase.client:java-client:2.1.0'
+    compile 'org.elasticsearch:elasticsearch:1.3.4'
+
+}
+
+test {
+  
+  
+  // show standard out and standard error of the test JVM(s) on the console
+  testLogging.showStandardStreams = true
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.11'
+}
