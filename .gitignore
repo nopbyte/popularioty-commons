@@ -1,4 +1,17 @@
+*target*
 *.class
+.project
+.metadata
+
+bin/**
+tmp/**
+tmp/**/*
+gradlew/**
+
+local.properties
+.classpath
+.settings/
+.loadpath
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
@@ -10,4 +23,14 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
 /bin
+/gradle
+*~
+.gradle
+build/

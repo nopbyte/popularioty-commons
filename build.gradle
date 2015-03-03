@@ -42,6 +42,6 @@ test {
 task wrapper(type: Wrapper) {
     gradleVersion = '1.11'
 }
-hello.doLast { 
-    println "- I'm inside commons!" 
-}
+//hello.doLast { 
+//    println "- I'm inside commons!" 
+//}
