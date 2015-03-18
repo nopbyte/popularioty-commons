@@ -47,7 +47,7 @@ public  class ElasticSearchNode implements SearchProvider{
 	@Override
 	public void close(Map<String, Object> configuration) throws Exception {
 		
-		if(!closed)
+		if(node != null && !closed)
 		 {
 			  node.close();
 			  node = null;

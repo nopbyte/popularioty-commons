@@ -30,7 +30,7 @@ public class MultiTypeReputationSearch extends ElasticSearchNode{
 	}
 
 	
-	public Map<String, Object> getSingleClassReputation(String entityId, String entityType, String reputationType) throws PopulariotyException
+	public String getSingleClassReputation(String entityId, String entityType, String reputationType) throws PopulariotyException
 	{
 		
 		QueryBuilder qb = QueryBuilders
@@ -50,7 +50,7 @@ public class MultiTypeReputationSearch extends ElasticSearchNode{
 				.execute().actionGet();
 		
 		for(SearchHit hit:scrollResp.getHits())
-			return hit.getSource();
+			return hit.getId();
 		
 		throw new PopulariotyException("No content found",null,LOG,"Reputation aggregated value not found for entity with id: "+entityId+" and type: "+entityType ,Level.DEBUG,204);
 	}

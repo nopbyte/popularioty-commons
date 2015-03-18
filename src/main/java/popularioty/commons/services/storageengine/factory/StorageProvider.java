@@ -1,5 +1,6 @@
 package popularioty.commons.services.storageengine.factory;
 
+import java.util.List;
 import java.util.Map;
 
 import popularioty.commons.exception.PopulariotyException;
@@ -33,4 +34,5 @@ public interface StorageProvider
 	
 	public Map<String, Object> getData(String id, String set) throws PopulariotyException;
 	
+	public List<Map<String, Object>> getData(List<String> ids, String set) throws PopulariotyException;
 }

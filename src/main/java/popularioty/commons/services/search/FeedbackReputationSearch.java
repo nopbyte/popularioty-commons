@@ -23,53 +23,29 @@ public class FeedbackReputationSearch {
 
 	private static Logger LOG = LoggerFactory.getLogger(FeedbackReputationSearch.class);	
 	
-	private String prop_index_aggregated_rep;
 	private String prop_index_feedback;
 	private String prop_index_meta_feedback;
 	private ElasticSearchNode search;
 	
 	public FeedbackReputationSearch(Map properties, SearchProvider provider) {
 		search = (ElasticSearchNode) provider;
-		this.prop_index_aggregated_rep= (String) properties.get("index.aggregated");
 		this.prop_index_feedback= (String) properties.get("index.feedback");
 		this.prop_index_meta_feedback= (String) properties.get("index.metafeedback");
 	}
 	
 	
-	public Map<String, Object> getFinalReputation(String entityId, String entityType) throws PopulariotyException
+	public List<String> getFeedbackByEntity(String entityId, String entityType, String groupId, int from, int size) throws PopulariotyException
 	{
-		
-		QueryBuilder qb = QueryBuilders
-                .boolQuery()
-                .must(QueryBuilders.termQuery("entity_id", entityId));
-        
-		if(entityType !=null && !entityType.equals(""))
-			qb=((BoolQueryBuilder) qb).must(QueryBuilders.termQuery("entity_type", entityType));
-		
-		
-		SearchResponse scrollResp = search.getClient().prepareSearch()
-				.setIndices(this.prop_index_aggregated_rep)
-				.setQuery(qb)
-				.setFrom(0)
-				.setSize(1)
-				.addSort("date",SortOrder.DESC)
-				.execute().actionGet();
-		
-		for(SearchHit hit:scrollResp.getHits())
-			return hit.getSource();
-		
-		throw new PopulariotyException("No content found",null,LOG,"Reputation aggregated value not found for entity with id: "+entityId+" and type: "+entityType ,Level.DEBUG,204);
-	}
-	
-
-	public List<Map<String, Object>> getFeedbackByEntity(String entityId, String entityType, int from, int size) throws PopulariotyException
-	{
-		List<Map<String,Object>> ret = new LinkedList<>();
+		List<String> ret = new LinkedList<>();
 		Map<String, Object> tmp = null;
 		QueryBuilder qb = QueryBuilders
                 .boolQuery()
                 .must(QueryBuilders.termQuery("entity_type", entityType))
                 .must(QueryBuilders.termQuery("entity_id", entityId));
+		
+		if(groupId != null)
+			qb=((BoolQueryBuilder) qb).must(QueryBuilders.termQuery("user_groups", groupId));
+		
 		SearchResponse scrollResp = search.getClient().prepareSearch()
 				.setIndices(prop_index_feedback)
 				.setQuery(qb)
@@ -79,19 +55,16 @@ public class FeedbackReputationSearch {
 				.execute().actionGet();
 		
 		for(SearchHit hit:scrollResp.getHits())
-		{
-			tmp = ElasticSearchNode.addId(hit,"feedback_id");
-			ret.add(tmp);
-		}
+			ret.add(hit.getId());
 		
 		if(ret.size()==0)
 			throw new PopulariotyException("No content found",null,LOG,"Feedback value not found for entity with id: "+entityId+" and type: "+entityType ,Level.DEBUG,204);
 		return ret;
 	}
 
-	public List<Map<String, Object>> getMetaFeedbackByFeedback(String feedbackId, int from, int size) throws PopulariotyException
+	public List<String> getMetaFeedbackByFeedback(String feedbackId, int from, int size) throws PopulariotyException
 	{
-		List<Map<String,Object>> ret = new LinkedList<>();
+		List<String> ret = new LinkedList<>();
 		Map<String, Object> tmp = null;
 		QueryBuilder qb = QueryBuilders
                 .boolQuery()
@@ -105,22 +78,19 @@ public class FeedbackReputationSearch {
 				.execute().actionGet();
 		
 		for(SearchHit hit:scrollResp.getHits())
-		{
-			tmp = ElasticSearchNode.addId(hit,"meta_feedback_id");
-			ret.add(tmp);
-		}
+			ret.add(hit.getId());
 		
 		if(ret.size()==0)
 			throw new PopulariotyException("No content found",null,LOG,"Feedback value not found for feedback with id: "+feedbackId ,Level.DEBUG,204);
 		return ret;
 	}
 	
-	public List<Map<String, Object>> getFeedbackLevenshteinString(String text, int maxQuerySize, int levenshtein) throws PopulariotyException
+	public List<String> getFeedbackLevenshteinString(String text, int maxQuerySize, int levenshtein) throws PopulariotyException
 	{
 		if(maxQuerySize>50)
 			throw new PopulariotyException("too many results requested",null,LOG,"too many results requested for fuzzy search of feedback" ,Level.DEBUG,422);
 		
-		List<Map<String,Object>> ret = new LinkedList<>();
+		List<String> ret = new LinkedList<>();
 		Map<String, Object> tmp = null;
 		FuzzyLikeThisQueryBuilder qb = QueryBuilders
 		.fuzzyLikeThisQuery("text", "title")
@@ -138,10 +108,7 @@ public class FeedbackReputationSearch {
 				.execute().actionGet();
 		
 		for(SearchHit hit:scrollResp.getHits())
-		{
-			tmp = ElasticSearchNode.addId(hit,"feedback_id");
-			ret.add(tmp);
-		}
+			ret.add(hit.getId());
 		
 		if(ret.size()==0)
 			throw new PopulariotyException("No content found",null,LOG,"Fuzzy search for text : "+text+" and levehnstein: "+levenshtein+" returned nothing...",Level.DEBUG,204);

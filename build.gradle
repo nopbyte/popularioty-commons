@@ -29,14 +29,22 @@ dependencies {
     compile 'com.couchbase.client:java-client:2.1.0'
     compile 'org.elasticsearch:elasticsearch:1.3.4'
     
-    testCompile 'junit:junit'
+    //parse configuration array of hosts
+    compile 'com.fasterxml.jackson.core:jackson-core:2.3.0'
+    compile 'com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.3.0'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.3.'
+    
+  	testCompile 'junit:junit:4.10'  
+    
 }
 
 test {
   
   
   // show standard out and standard error of the test JVM(s) on the console
+  
   testLogging.showStandardStreams = true
+  
 }
 
 task wrapper(type: Wrapper) {
@@ -45,3 +53,5 @@ task wrapper(type: Wrapper) {
 //hello.doLast { 
 //    println "- I'm inside commons!" 
 //}
+
+
