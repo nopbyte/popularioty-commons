@@ -16,8 +16,12 @@ import org.slf4j.LoggerFactory;
 
 import popularioty.commons.exception.PopulariotyException;
 import popularioty.commons.exception.PopulariotyException.Level;
+import popularioty.commons.services.searchengine.criteria.AbstractCriteria;
+import popularioty.commons.services.searchengine.criteria.search.SearchCriteria;
 import popularioty.commons.services.searchengine.factory.ElasticSearchNode;
 import popularioty.commons.services.searchengine.factory.SearchProvider;
+import popularioty.commons.services.searchengine.queries.Query;
+import popularioty.commons.services.searchengine.queries.QueryType;
 
 public class FeedbackReputationSearch {
 
@@ -36,6 +40,21 @@ public class FeedbackReputationSearch {
 	
 	public List<String> getFeedbackByEntity(String entityId, String entityType, String groupId, int from, int size) throws PopulariotyException
 	{
+		/*Query q = new Query(QueryType.SELECT_ID); 
+		if(groupId != null)
+			q.addCriteria(new SearchCriteria<String>("user_groups", groupId, SearchCriteriaType.MUST_MATCH));
+		q.addCriteria(new SearchCriteria<String>("entity_type", entityType, SearchCriteriaType.MUST_MATCH));
+		q.addCriteria(new SearchCriteria<String>("entity_id", entityId, SearchCriteriaType.MUST_MATCH));
+		
+		q.addCriteria(new SortCriteria<String>("date", SortCriteriaConstants.VALUE_DESC, SortCriteriaType.SORT));
+		q.addCriteria(new SortCriteria<Integer>(SortCriteriaConstants.FIELD_FROM, new Integer(from), SortCriteriaType.RANGE));
+		q.addCriteria(new SortCriteria<Integer>(SortCriteriaConstants.FIELD_SIZE, new Integer(size), SortCriteriaType.RANGE));
+		
+		QueryResponse response = search.executeQuery(q, prop_index_feedback);
+		return response.getListofStringsResult();
+		*/
+	
+		
 		List<String> ret = new LinkedList<>();
 		Map<String, Object> tmp = null;
 		QueryBuilder qb = QueryBuilders

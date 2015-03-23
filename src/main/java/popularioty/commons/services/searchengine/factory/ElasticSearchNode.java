@@ -1,6 +1,7 @@
 package popularioty.commons.services.searchengine.factory;
 
 
+import java.util.List;
 import java.util.Map;
 
 import org.elasticsearch.client.Client;
@@ -11,6 +12,10 @@ import org.elasticsearch.node.Node;
 import org.elasticsearch.search.SearchHit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import popularioty.commons.exception.PopulariotyException;
+import popularioty.commons.services.searchengine.queries.Query;
+import popularioty.commons.services.searchengine.queries.QueryResponse;
 
 /**
  * Although implementing the locking mechanism for each class extending this SearchNode is not the most elegant, it was preffered
@@ -61,6 +66,7 @@ public  class ElasticSearchNode implements SearchProvider{
 
 	
 	// Additional methods specific for elasticsearch node 
+	//TODO needs to be removed after the refactoring has been done!
 	public Node getNode() {
 		return node;
 	}
@@ -96,6 +102,15 @@ public  class ElasticSearchNode implements SearchProvider{
 		if(levenshtein==2)
 			return Fuzziness.TWO;
 		return Fuzziness.AUTO;
+	}
+
+
+	@Override
+	public QueryResponse executeQuery(Query query, String index)
+			throws PopulariotyException {
+		
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }
