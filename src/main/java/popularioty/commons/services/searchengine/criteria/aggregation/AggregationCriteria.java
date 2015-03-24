@@ -10,7 +10,7 @@ public  class AggregationCriteria<T> extends AbstractCriteria<T>
 {
 	private AggregationCriteriaType type;
 
-	protected AggregationCriteria(String field, T value, AggregationCriteriaType type) {
+	public AggregationCriteria(String field, T value, AggregationCriteriaType type) {
 		super(field, value);
 		this.type = type;
 	}

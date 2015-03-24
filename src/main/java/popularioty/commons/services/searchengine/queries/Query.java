@@ -16,6 +16,7 @@ public  class Query
 
 	public Query(QueryType type) {
 		this.criteria = new LinkedList<>();
+		this.subQueries = new LinkedList<>();
 		this.type = type;
 	}
 	
@@ -54,6 +55,11 @@ public  class Query
 	public void addCriteria(AbstractCriteria newValue)
 	{
 		this.criteria.add(newValue);
+	}
+	
+	public void addSubQuery(Query q)
+	{
+		subQueries.add(q);
 	}
 	
 }

@@ -5,6 +5,13 @@ import java.util.Map;
 
 public class QueryResponse 
 {
+	public enum QueryResponseType{
+		SINGLE_STRING,LIST_OF_STRINGS,SINGLE_MAP,LIST_OF_MAPS
+	}
+	private QueryResponseType queryResponsetype;
+	
+	private QueryResponse innerResponse;
+	
 	private String singleStringResult;
 	
 	private List<String> ListofStringsResult;
@@ -44,6 +51,22 @@ public class QueryResponse
 
 	public void setListofMapsResult(List<Map<String, Object>> listofMapsResult) {
 		ListofMapsResult = listofMapsResult;
+	}
+
+	public QueryResponseType getQueryResponsetype() {
+		return queryResponsetype;
+	}
+
+	public void setQueryResponsetype(QueryResponseType queryResponsetype) {
+		this.queryResponsetype = queryResponsetype;
+	}
+
+	public QueryResponse getInnerResponse() {
+		return innerResponse;
+	}
+
+	public void setInnerResponse(QueryResponse innerResponse) {
+		this.innerResponse = innerResponse;
 	}
 	
 	
