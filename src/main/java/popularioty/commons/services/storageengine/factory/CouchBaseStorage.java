@@ -178,11 +178,19 @@ public class CouchBaseStorage implements StorageProvider{
 		
 	}
 	@Override
-	public List<Map<String, Object>> getData(List<String> ids, String set)
+	public List<Map<String, Object>> getData(List<String> ids, String set, boolean strict)
 			throws PopulariotyException {
 		List<Map<String, Object>>  ret = new LinkedList<>();
 		for(String id: ids)
-			ret.add(this.getData(id, set));
+		{
+			try{
+				ret.add(this.getData(id, set));
+			}catch(PopulariotyException ex)
+			{
+				if(!strict && ex.getHTTPErrorCode()!=404)//if one doc is missing, we can live with it...
+					throw ex;
+			}
+		}
 		return ret;
 	}
 	

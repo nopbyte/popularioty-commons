@@ -6,9 +6,9 @@ import java.util.Map;
 public class QueryResponse 
 {
 	public enum QueryResponseType{
-		SINGLE_STRING,LIST_OF_STRINGS,SINGLE_MAP,LIST_OF_MAPS
+		SINGLE_STRING,LIST_OF_STRINGS,SINGLE_MAP,LIST_OF_MAPS,NONE
 	}
-	private QueryResponseType queryResponsetype;
+	private QueryResponseType queryResponsetype = QueryResponseType.NONE;
 	
 	private QueryResponse innerResponse;
 	
@@ -20,6 +20,15 @@ public class QueryResponse
 	
 	private List<Map<String,Object>> ListofMapsResult;
 	
+	public QueryResponse()
+	{
+		
+	}
+	
+	public QueryResponse(QueryResponseType t)
+	{
+		queryResponsetype = t;
+	}
 	
 	public String getSingleStringResult() {
 		return singleStringResult;

@@ -13,7 +13,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import popularioty.commons.exception.PopulariotyException;
-import popularioty.commons.services.search.FeedbackReputationSearch;
 import popularioty.commons.services.searchengine.criteria.aggregation.AggregationCriteria;
 import popularioty.commons.services.searchengine.criteria.aggregation.AggregationCriteriaType;
 import popularioty.commons.services.searchengine.criteria.search.SearchCriteria;

@@ -12,7 +12,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import popularioty.commons.exception.PopulariotyException;
-import popularioty.commons.services.search.FeedbackReputationSearch;
 import popularioty.commons.services.searchengine.factory.SearchEngineFactory;
 import popularioty.commons.services.searchengine.factory.SearchProvider;
 import popularioty.commons.services.storageengine.factory.StorageFactory;
@@ -28,7 +27,7 @@ public class SearchTest {
 	private static Settings settings;
 	private static StorageProvider store; 
 	private static SearchProvider search;
-	private static FeedbackReputationSearch feedbackSearch;
+	
 	
 	 @BeforeClass
 	 public static void beforeClass() throws Exception {
@@ -37,14 +36,14 @@ public class SearchTest {
 		search= SearchEngineFactory.getSearchProvider(settings.getProperty("search.engine"));
 		store.init(settings.getSettings());
 		search.init(settings.getSettings());
-		feedbackSearch = new FeedbackReputationSearch(settings.getSettings(), search); 
+		//feedbackSearch = new FeedbackReputationSearch(settings.getSettings(), search); 
 	 } 
 	 
 	  @Test
 	 public void testReadDocument() throws JsonProcessingException, IOException, PopulariotyException {
 		 
 		 
-		 String e_id = "test_"+UUID.randomUUID().toString();
+		/* String e_id = "test_"+UUID.randomUUID().toString();
 		 System.out.println("id of new entity reputation"+e_id);
 		 String e_type = "test_type";
 		 String doc = "{ \"user_name\":\"string\","
@@ -92,7 +91,7 @@ public class SearchTest {
 				fail();
 			}
 			
-	       
+	       */
 	     
 	 }
 	 

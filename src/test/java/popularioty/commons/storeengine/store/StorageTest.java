@@ -1,20 +1,12 @@
 package popularioty.commons.storeengine.store;
 
-import static org.junit.Assert.fail;
-
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
-import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import popularioty.commons.exception.PopulariotyException;
-import popularioty.commons.services.search.FeedbackReputationSearch;
 import popularioty.commons.services.searchengine.factory.SearchEngineFactory;
 import popularioty.commons.services.searchengine.factory.SearchProvider;
 import popularioty.commons.services.storageengine.factory.StorageFactory;
@@ -22,15 +14,13 @@ import popularioty.commons.services.storageengine.factory.StorageProvider;
 import popularioty.commons.test.settings.Settings;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class StorageTest {
 
 	private static Settings settings;
 	private static StorageProvider store; 
 	private static SearchProvider search;
-	private static FeedbackReputationSearch feedbackSearch;
+//	private static FeedbackReputationSearch feedbackSearch;
 	
 	 @BeforeClass
 	 public static void beforeClass() throws Exception {
@@ -39,13 +29,13 @@ public class StorageTest {
 		search= SearchEngineFactory.getSearchProvider(settings.getProperty("search.engine"));
 		store.init(settings.getSettings());
 		search.init(settings.getSettings());
-		feedbackSearch = new FeedbackReputationSearch(settings.getSettings(), search); 
+		//feedbackSearch = new FeedbackReputationSearch(settings.getSettings(), search); 
 	 } 
 	 
 	 @Test
 	 public void insertDocument() throws JsonProcessingException, IOException, PopulariotyException {
 		 
-		 
+		 /*
 		 String doc = "{ \"user_name\":\"string\","
 				 +"\"title\":\"string\","
 				+"\"text\":\"string\","
@@ -75,14 +65,14 @@ public class StorageTest {
 				}catch(RuntimeException e)
 				{
 					System.out.println("runtime exception... ");
-				}
+				}*/
 	     
 	 }
 	 
 	 @Test
 	 public void testReadDocument() throws JsonProcessingException, IOException, PopulariotyException {
 		 
-		 
+		 /*
 		 String e_id = "test_"+UUID.randomUUID().toString();
 		 System.out.println("id of new entity reputation"+e_id);
 		 String e_type = "test_type";
@@ -130,7 +120,7 @@ public class StorageTest {
 				fail();
 			}
 			
-	       
+	       */
 	     
 	 }
 	 

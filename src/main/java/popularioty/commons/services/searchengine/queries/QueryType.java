@@ -2,5 +2,5 @@ package popularioty.commons.services.searchengine.queries;
 
 public enum QueryType 
 {
-	SELECT_ID,COUNT,AGGREGATIONS
+	SELECT,SELECT_ID,AGGREGATIONS,FUZZY_TEXT_SEARCH
 }
