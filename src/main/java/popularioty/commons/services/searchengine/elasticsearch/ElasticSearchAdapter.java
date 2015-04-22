@@ -135,7 +135,7 @@ public abstract class ElasticSearchAdapter {
 			reqBuilder.setQuery(qb);
 			SearchResponse scrollResp = reqBuilder.execute().actionGet();
 			if(!scrollResp.getHits().iterator().hasNext())
-				throw new PopulariotyException("No content found",null,LOG,"Reputation aggregated value not found for query"+q.toString(),Level.DEBUG,204);
+				throw new PopulariotyException("No content found",null,LOG,"Reputation aggregated value not found for query"+q.toString(),Level.DEBUG,404);
 			res = buildResponse(scrollResp, idOnly);
 			
 		}
@@ -281,7 +281,7 @@ public abstract class ElasticSearchAdapter {
 			qb.maxQueryTerms(maxQuerySize); 
 		
 		
-		SearchResponse scrollResp = search.getClient().prepareSearch()
+		SearchResponse scrollResp = search.ganObjectetClient().prepareSearch()
 				.setIndices(prop_index_feedback)
 				.setQuery(qb)
 				.addSort("date",SortOrder.DESC)

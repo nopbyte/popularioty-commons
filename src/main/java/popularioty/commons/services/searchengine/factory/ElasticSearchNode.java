@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.elasticsearch.action.search.SearchPhaseExecutionException;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
@@ -159,19 +160,27 @@ public  class ElasticSearchNode extends ElasticSearchAdapter implements SearchPr
 	public QueryResponse execute(Query query, String index) throws PopulariotyException
 	{
 		QueryResponse  res = null;
-		if(query.getType().equals(QueryType.SELECT)|| query.getType().equals(QueryType.SELECT_ID))
-		{
-			res = super.executeSelect(query, index,true);
-			if(store != null &&  query.getType().equals(QueryType.SELECT) && res.getQueryResponsetype().equals(QueryResponseType.LIST_OF_STRINGS)) 
+		try{
+			if(query.getType().equals(QueryType.SELECT)|| query.getType().equals(QueryType.SELECT_ID))
 			{
-				res = retrieveFullData(res, index);				
+				res = super.executeSelect(query, index,true);
+				if(store != null &&  query.getType().equals(QueryType.SELECT) && res.getQueryResponsetype().equals(QueryResponseType.LIST_OF_STRINGS)) 
+				{
+					res = retrieveFullData(res, index);				
+				}
 			}
+			else if(query.getType().equals(QueryType.AGGREGATIONS))
+				res = executeAggregation(query, null);
+			else if (query.getType().equals(QueryType.FUZZY_TEXT_SEARCH))
+				res = retrieveFullData(executeFuzzyTextSearch(query, index,true),index);
+			
+		}catch(SearchPhaseExecutionException se)
+		{
+			if(se.phaseName().equals("query"))
+				throw new PopulariotyException("Search error",null,LOG,"Unable to execute query in ElasticSearch. SearchPhaseExecutionException with phasename == query. Index is empty?",Level.DEBUG,500);
 		}
-		else if(query.getType().equals(QueryType.AGGREGATIONS))
-			res = executeAggregation(query, null);
-		else if (query.getType().equals(QueryType.FUZZY_TEXT_SEARCH))
-			res = retrieveFullData(executeFuzzyTextSearch(query, index,true),index);
 		return res;
+		
 	}
 	
 	// Additional methods specific for elasticsearch node 
