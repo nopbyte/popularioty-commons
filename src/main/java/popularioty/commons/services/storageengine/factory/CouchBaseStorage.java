@@ -130,6 +130,10 @@ public class CouchBaseStorage implements StorageProvider{
 				}
 				ret.put( key , array);
 			}
+			if(o instanceof Map)
+			{
+				ret.put(key,convertMap((Map<String, Object>) o));
+			}
 			else
 				ret.put(key, o);
 		}

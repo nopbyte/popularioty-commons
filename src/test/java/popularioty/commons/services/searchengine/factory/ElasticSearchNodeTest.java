@@ -36,14 +36,14 @@ public class ElasticSearchNodeTest {
 	private static ElasticSearchNode search;
 	
 	
-	 @BeforeClass
+	 //@BeforeClass
 	 public static void beforeClass() throws Exception {
 	    settings = new Settings();
 		search= new ElasticSearchNode();
 		search.init(settings.getSettings());	 
 	 } 
 	 
-	 @Test
+	 //@Test
 	 public void testAggregation() throws JsonProcessingException, IOException, PopulariotyException {
 		 
 		  Map<String,String> map = new HashMap<String, String>();
@@ -52,7 +52,7 @@ public class ElasticSearchNodeTest {
 		  System.out.println(res);
 	 }
 	 
-	 @Test
+	 //@Test
 	 public void testGenericAggregation() throws JsonProcessingException, IOException, PopulariotyException {
 		 
 		  Map<String,String> map = new HashMap<String, String>();
@@ -65,7 +65,7 @@ public class ElasticSearchNodeTest {
 		  System.out.println(resp.getMapResult());
 	 }
 	 
-	 @AfterClass
+	 //@AfterClass
 	 public static void close()
 	 {
 		 try {
