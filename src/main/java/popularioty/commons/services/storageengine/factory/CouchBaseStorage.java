@@ -113,39 +113,50 @@ public class CouchBaseStorage implements StorageProvider{
 		  
 	}
 	
+
+	private JsonObject rootOfRecursion(Map<String, Object> data)
+	{
+		return (JsonObject) convertMap(data);
+	}
+	
+	private JsonArray convertList(List o)
+	{
+		JsonArray array = JsonArray.create();
+		Object current = null;
+		for( Iterator it = ((List) o).iterator(); it.hasNext(); )
+		{
+			current = it.next();
+			array.add(handleNode(current));
+		}
+		return array;
+	}
+	
 	private JsonObject convertMap(Map<String,Object> data)
 	{
-		JsonObject ret = JsonObject.create();
-		for(String key: data.keySet())
-		{
-			Object o = data.get(key);
-			if(o instanceof List)
+			JsonObject ret = JsonObject.create();
+			for(String key: data.keySet())
 			{
-				JsonArray array = JsonArray.create();
-				Object current = null;
-				for( Iterator it = ((List) o).iterator(); it.hasNext(); )
-				{
-					current = it.next();
-					array.add(current);
-				}
-				ret.put( key , array);
+				Object o = data.get(key);
+				ret.put(key, handleNode(o));
 			}
-			if(o instanceof Map)
-			{
-				ret.put(key,convertMap((Map<String, Object>) o));
-			}
-			else
-				ret.put(key, o);
-		}
-		return ret;
+			return ret;
 	}
+	private Object handleNode(Object current)
+	{
+		if(current instanceof List)
+			return convertList((List) current);
+		if(current instanceof Map)
+			return convertMap((Map<String, Object>) current);
+		return current;
+	}
+	
 	public Map<String, Object> storeData(String id, Map<String, Object> data, String set) throws PopulariotyException
 	{
 		
 		try{
 			//set is the bucket name
 			Bucket bucket = getBucket(set);
-			JsonObject d = convertMap(data);
+			JsonObject d = rootOfRecursion(data);
 			JsonDocument inserted = bucket.insert(
 					JsonDocument.create(id, d));
 		
