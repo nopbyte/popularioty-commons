@@ -1,6 +1,7 @@
 package popularioty.commons.services.storageengine.factory;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -23,6 +24,7 @@ import com.couchbase.client.java.CouchbaseCluster;
 import com.couchbase.client.java.document.JsonDocument;
 import com.couchbase.client.java.document.json.JsonArray;
 import com.couchbase.client.java.document.json.JsonObject;
+import com.couchbase.client.java.transcoder.JsonTranscoder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -116,7 +118,25 @@ public class CouchBaseStorage implements StorageProvider{
 
 	private JsonObject rootOfRecursion(Map<String, Object> data)
 	{
-		return (JsonObject) convertMap(data);
+		
+		String json;
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			json = mapper.writeValueAsString(data);
+			JsonTranscoder trans = new JsonTranscoder();
+			JsonObject jsonObj = trans.stringToJsonObject(json);
+			return jsonObj;
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+			return (JsonObject) convertMap(data);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return (JsonObject) convertMap(data);
+			
+		}
+		
+		
 	}
 	
 	private JsonArray convertList(List o)
@@ -157,7 +177,7 @@ public class CouchBaseStorage implements StorageProvider{
 			//set is the bucket name
 			Bucket bucket = getBucket(set);
 			JsonObject d = rootOfRecursion(data);
-			JsonDocument inserted = bucket.insert(
+			JsonDocument inserted = bucket.upsert(
 					JsonDocument.create(id, d));
 		
 			/*This could be removed for performance reasons, however 
