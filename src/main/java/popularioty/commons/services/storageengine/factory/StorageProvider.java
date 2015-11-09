@@ -30,7 +30,25 @@ public interface StorageProvider
 	 */
 	public void close(Map<String,Object> configuration)throws Exception;
 	
+	/**
+	 * 
+	 * @param id of the element to be stored
+	 * @param data data to be stored
+	 * @param set
+	 * @return
+	 * @throws PopulariotyException
+	 */
 	public Map<String, Object> storeData(String id, Map<String, Object> data, String set) throws PopulariotyException;
+	/**
+	 * 
+	 * @param id of the element to be stored
+	 * @param data data to be stored
+	 * @param set
+	 * @param timoutMillis time to live for the data in the database
+	 * @return
+	 * @throws PopulariotyException
+	 */
+	public Map<String, Object> storeData(String id, Map<String, Object> data, String set, long timoutMillis) throws PopulariotyException;
 	
 	public Map<String, Object> getData(String id, String set) throws PopulariotyException;
 	/**
