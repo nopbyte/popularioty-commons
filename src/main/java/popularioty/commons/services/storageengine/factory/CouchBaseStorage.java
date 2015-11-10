@@ -230,18 +230,19 @@ public class CouchBaseStorage implements StorageProvider{
 	}
 	@Override
 	public Map<String, Object> storeData(String id, Map<String, Object> data,
-			String set, long timoutMillis) throws PopulariotyException
+			String set, int timoutSecs) throws PopulariotyException
 	{
 		try{
 			//set is the bucket name
 			Bucket bucket = getBucket(set);
 			JsonObject d = rootOfRecursion(data);
-			JsonDocument inserted = bucket.upsert(JsonDocument.create(id, d), timoutMillis, TimeUnit.MILLISECONDS);
+			JsonDocument inserted = bucket.upsert(JsonDocument.create(id, d));
 		
 			/*This could be removed for performance reasons, however 
 			 * it helps to make sure that data really made it into the bucket?
 			*/
-			JsonDocument found = bucket.get(id);
+			JsonDocument found = bucket.getAndTouch(id, (int) timoutSecs);
+			
 			return found.content().toMap();
 
 		}catch(BackpressureException bex)
