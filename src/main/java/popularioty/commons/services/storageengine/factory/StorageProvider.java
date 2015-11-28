@@ -30,7 +30,25 @@ public interface StorageProvider
 	 */
 	public void close(Map<String,Object> configuration)throws Exception;
 	
+	/**
+	 * 
+	 * @param id of the element to be stored
+	 * @param data data to be stored
+	 * @param set
+	 * @return
+	 * @throws PopulariotyException
+	 */
 	public Map<String, Object> storeData(String id, Map<String, Object> data, String set) throws PopulariotyException;
+	/**
+	 * 
+	 * @param id of the element to be stored
+	 * @param data data to be stored
+	 * @param set
+	 * @param timoutSecs time to live for the data in the database in secs or as date when it is higher than 30 days ( 60 * 60 * 24 * 30) see 	http://developer.couchbase.com/documentation/server/4.0/developer-guide/expiry.html
+	 * @return
+	 * @throws PopulariotyException
+	 */
+	public Map<String, Object> storeData(String id, Map<String, Object> data, String set, int timoutSecs) throws PopulariotyException;
 	
 	public Map<String, Object> getData(String id, String set) throws PopulariotyException;
 	/**

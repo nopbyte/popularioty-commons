@@ -33,6 +33,12 @@ public class StorageTest {
 	 } 
 	 
 	 @Test
+	 public void testConversionToJson()
+	 {
+		 
+	 }
+	 
+	 @Test
 	 public void insertDocument() throws JsonProcessingException, IOException, PopulariotyException {
 		 
 		 /*
