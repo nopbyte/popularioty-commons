@@ -37,6 +37,8 @@ public class CouchBaseStorage implements StorageProvider{
 	Map<String,Bucket>  buckets = null;
 	private long timeout=1;
 	private TimeUnit tunit = TimeUnit.MINUTES;
+	private JsonTranscoder trans = new JsonTranscoder();
+	private ObjectMapper mapper = new ObjectMapper();
 	/**
 	 * 
 	 * @param hosts JSON array of strings including the hosts
@@ -123,7 +125,7 @@ public class CouchBaseStorage implements StorageProvider{
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			json = mapper.writeValueAsString(data);
-			JsonTranscoder trans = new JsonTranscoder();
+			
 			JsonObject jsonObj = trans.stringToJsonObject(json);
 			return jsonObj;
 		} catch (JsonProcessingException e) {
@@ -209,7 +211,24 @@ public class CouchBaseStorage implements StorageProvider{
 		JsonDocument found = bucket.get(id);
 		if(found == null)
 			throw new PopulariotyException("No content found",null,LOG,"value not found for couchbase document with id: "+id,Level.DEBUG,404);
-		return found.content().toMap();
+		JsonObject o = found.content();//.toMap()
+		JsonNode node;
+		try {
+			node = mapper.readTree(trans.jsonObjectToString(o));
+			Map<String, Object> map = mapper.treeToValue(node, HashMap.class);
+			return map;
+		} catch (JsonProcessingException e) {
+			System.err.println("could not convert from String to JsonNode, and then to Map.");
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("could not convert from String to JsonNode, and then to Map.");
+			e.printStackTrace();
+		} catch (Exception e) {
+			System.err.println("could not convert from String to JsonNode, and then to Map.");
+			e.printStackTrace();
+		}
+	
+		return o.toMap();
 		
 	}
 	@Override
